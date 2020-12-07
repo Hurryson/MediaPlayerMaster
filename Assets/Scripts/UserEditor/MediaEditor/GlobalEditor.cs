@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using Modelu.Tools;
-using System.Runtime.InteropServices;
 using System.IO;
 using Sirenix.OdinInspector;
 
@@ -18,22 +16,33 @@ namespace UserEditor
             [BoxGroup("Setting")]
             public Button videoFolderPathBtn;
 
-            [BoxGroup("Generate")]
+            [BoxGroup("Generate Cell")]
+            public Button generateBtn;
+            [BoxGroup("Generate Cell")]
             public Button generateAllVideoBtn;
-            [BoxGroup("Generate")]
+            [BoxGroup("Generate Cell")]
             public Button clearAllVideoBtn;
-            [BoxGroup("Generate")]
+            [BoxGroup("Generate Cell")]
             public Transform videoItemPrefab;
-            [BoxGroup("Generate")]
+            [BoxGroup("Generate Cell")]
             public Transform videoGroup;
-            private List<Transform> videoItems = new List<Transform>();
+
+            [BoxGroup("Generate Rule")]
+            public Button generateRuleBtn;
+
+            private List<MediaCell> mediaCells = new List<MediaCell>();
+
             public void Init()
             {
                 videoFolderPathBtn.onClick.AddListener(SelectVideoFolder);
 
+                generateBtn.onClick.AddListener(GenerateCell);
+
                 generateAllVideoBtn.onClick.AddListener(GenerateAllVideos);
 
                 clearAllVideoBtn.onClick.AddListener(ClearAllVideos);
+
+                generateRuleBtn.onClick.AddListener(GenerateRule);
             }
 
             /// <summary>
@@ -45,6 +54,14 @@ namespace UserEditor
             }
 
             /// <summary>
+            /// 生成单个配置
+            /// </summary>
+            private void GenerateCell()
+            {
+                Spawner("");
+            }
+
+            /// <summary>
             /// 生成文件夹下所有视频配置信息
             /// </summary>
             private void GenerateAllVideos()
@@ -52,9 +69,26 @@ namespace UserEditor
                 List<string> videoNames = GetFiles(videoFolder);
                 for (int i = 0; i < videoNames.Count; i++)
                 {
-                    Transform tf = Instantiate(videoItemPrefab, videoGroup);
-                    videoItems.Add(tf);
+                    Spawner(videoNames[i]);
                 }
+            }
+
+            private MediaCell Spawner(string path)
+            {
+                Transform tf = Instantiate(videoItemPrefab, videoGroup);
+                MediaCell cell = tf.GetComponent<MediaCell>();
+                cell.Init(videoFolder,path,this);
+                mediaCells.Add(cell);
+                GenerateRule();
+                return cell;
+            }
+
+            public void RemoveCell(MediaCell cell)
+            {
+                Destroy(cell.gameObject);
+                mediaCells.Remove(cell);
+
+                GenerateRule();
             }
 
             /// <summary>
@@ -62,11 +96,13 @@ namespace UserEditor
             /// </summary>
             private void ClearAllVideos()
             {
-                for (int i = 0; i < videoItems.Count; i++)
+                for (int i = 0; i < mediaCells.Count; i++)
                 {
-                    Destroy(videoItems[i].gameObject);
+                    Destroy(mediaCells[i].gameObject);
                 }
-                videoItems.Clear();
+                mediaCells.Clear();
+
+                GenerateRule();
             }
 
             /// <summary>
@@ -92,6 +128,21 @@ namespace UserEditor
                     }
                 }
                 return names;
+            }
+
+            /// <summary>
+            /// 生成配置规则
+            /// </summary>
+            private void GenerateRule()
+            {
+                MediaManager mediaManager = FindObjectOfType<MediaManager>();
+                for (int i = 0; i < mediaCells.Count; i++)
+                {
+                    mediaCells[i].id = i;
+                    mediaCells[i].Rename();
+                }
+                mediaManager.Init(videoFolder, mediaCells);
+                mediaManager.Generate();
             }
         }
     }

@@ -10,9 +10,12 @@ namespace UserEditor
         {
             public GlobalEditor globalEditor;
 
+            public MediaCellEditor mediaCellEditor;
+
             public void Init()
             {
                 globalEditor.Init();
+                mediaCellEditor.Init();
             }
         }
     }

@@ -14,6 +14,6 @@ public class GlobalSettingUI : MonoBehaviour
     public void Init()
     {
         Vector2 reslotion = init.windowSetting.GetResolution();
-        mediaDisplay.rectTransform.sizeDelta = reslotion;
+        //mediaDisplay.rectTransform.sizeDelta = reslotion;
     }
 }

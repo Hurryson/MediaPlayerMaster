@@ -29,16 +29,16 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
+    - StompyRobot.SRDebugger
     - Assembly-CSharp-firstpass
+    - StompyRobot.SRF
     - Assembly-CSharp
     - Sirenix.OdinInspector.CompatibilityLayer
-    - StompyRobot.SRDebugger
-    - StompyRobot.SRF
-    - PsdPlugin
-    - Sirenix.OdinInspector.CompatibilityLayer.Editor
-    - Sirenix.OdinInspector.Modules.UnityMathematics
     - StompyRobot.SRDebugger.Editor
+    - Sirenix.OdinInspector.CompatibilityLayer.Editor
+    - PsdPlugin
     - StompyRobot.SRF.Editor
+    - Sirenix.OdinInspector.Modules.UnityMathematics
     showAdvancedSettings: 0
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
