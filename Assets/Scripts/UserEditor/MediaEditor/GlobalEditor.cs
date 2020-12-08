@@ -27,9 +27,6 @@ namespace UserEditor
             [BoxGroup("Generate Cell")]
             public Transform videoGroup;
 
-            [BoxGroup("Generate Rule")]
-            public Button generateRuleBtn;
-
             private List<MediaCell> mediaCells = new List<MediaCell>();
 
             public void Init()
@@ -41,8 +38,6 @@ namespace UserEditor
                 generateAllVideoBtn.onClick.AddListener(GenerateAllVideos);
 
                 clearAllVideoBtn.onClick.AddListener(ClearAllVideos);
-
-                generateRuleBtn.onClick.AddListener(GenerateRule);
             }
 
             /// <summary>

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UserEditor.ControllerEditor;
 
 namespace UserEditor
 {
@@ -33,6 +34,8 @@ namespace UserEditor
 
             [HideInInspector]
             public MediaCell mediaCell;
+
+            public ControllerCellEditor controllerCellEditor;
             public void Init()
             {
                 _instance = this;
@@ -56,6 +59,7 @@ namespace UserEditor
                 mediaCell = cell;
                 pathText.text = mediaCell.path;
                 display._mediaPlayer = cell.videoPlayer;
+                controllerCellEditor.Init(cell);
             }
 
             public void Close()

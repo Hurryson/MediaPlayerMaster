@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class GlobalSettingUI : MonoBehaviour
 {
-    public Init init;
+    public AppInit init;
 
     public Canvas MediaCanvas;
 

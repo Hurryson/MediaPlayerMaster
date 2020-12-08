@@ -7,6 +7,8 @@ using UserEditor.MediaEditor;
 
 public class MediaManager : MonoBehaviour
 {
+    public static MediaManager _instance;
+
     [BoxGroup("Manager")]
     public VideoManager videoManager;
     [BoxGroup("Manager")]
@@ -20,6 +22,11 @@ public class MediaManager : MonoBehaviour
     public List<MediaCell> mediaCells = new List<MediaCell>();
 
     public int selectMediaID = 0;
+
+    public void Init()
+    {
+        _instance = this;
+    }
 
     public void Init(string _videoFolder, List<MediaCell> cells)
     {
@@ -46,6 +53,22 @@ public class MediaManager : MonoBehaviour
     {
         mediaCells[selectMediaID].Hide();
         mediaCells[id].Show();
+        selectMediaID = id;
+    }
+
+    public void Play(int id)
+    {
+        mediaCells[selectMediaID].Rewind();
+        mediaCells[id].Play();
+        selectMediaID = id;
+    }
+
+    public void SelectAndPlay(int id)
+    {
+        mediaCells[selectMediaID].Hide();
+        mediaCells[id].Show();
+        mediaCells[selectMediaID].Rewind();
+        mediaCells[id].Play();
         selectMediaID = id;
     }
 }

@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine.UI;
 using RenderHeads.Media.AVProVideo;
 using Sirenix.OdinInspector;
-using TMPro;
+using UserEditor.ControllerEditor;
 
 namespace UserEditor
 {
@@ -30,8 +30,6 @@ namespace UserEditor
 
             private GlobalEditor globalEditor;
 
-            public KeyCode playKey;
-
             [System.Serializable]
             public class Info
             {
@@ -41,8 +39,29 @@ namespace UserEditor
                 [BoxGroup("Self Display")]
                 public RawImage textureDisplay;
             }
-
             public Info info;
+
+            [System.Serializable]
+            public class Control
+            {
+                public Controller controller;
+
+                public MediaEvent mediaEvent;
+            }
+
+            public Control control;
+
+            private void Update()
+            {
+                //监听按键按下  执行事件
+                for (int i = 0; i < control.controller.keyCodes.Count; i++)
+                {
+                    if (Input.GetKeyDown(control.controller.keyCodes[i]))
+                    {
+                        control.mediaEvent.Perform(id);
+                    }
+                }
+            }
 
             public void OnPointerClick(PointerEventData eventData)
             {
@@ -55,8 +74,11 @@ namespace UserEditor
                 path = _path;
                 globalEditor = editor;
                 Spawner();
-            }
 
+                //初始化时注册事件
+                control.mediaEvent.mediaSelectEvent += MediaManager._instance.SelectAndPlay;
+                //control.mediaEvent.mediaPlayEvent += MediaManager._instance.Play;
+            }
             public void Spawner()
             {
                 switch (mediaType)
